@@ -1,21 +1,18 @@
 Autoswitch Python Virtualenv
 ============================
 
-|CircleCI| |Release| |GPLv3|
+*zsh-autoswitch-virtualenv* automatically detects and activates your virtualenv if matching project
+name exists in ``AUTOSWITCH_VIRTUAL_ENV_DIR``:
 
+::
 
-zsh-autoswitch-virtualenv automatically detects and activates your virtualenv if matching project
-name exists in `AUTOSWITCH_VIRTUAL_ENV_DIR`:
-
-```
-export AUTOSWITCH_VIRTUAL_ENV_DIR="/var/envs"
-```
+  export AUTOSWITCH_VIRTUAL_ENV_DIR="/var/envs"
 
 
 Installing
 ----------
 
-oh-my-zsh_
+**oh-my-zsh**
 
 Copy this repository to ``$ZSH_CUSTOM/plugins``, where ``$ZSH_CUSTOM``
 is the directory with custom plugins of oh-my-zsh `(read more) <https://github.com/robbyrussell/oh-my-zsh/wiki/Customization/>`_:
