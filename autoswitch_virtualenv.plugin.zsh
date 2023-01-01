@@ -69,6 +69,7 @@ function _get_venv_name() {
     # clear pipenv from the extra identifiers at the end
     if [[ "$venv_type" == "pipenv" ]]; then
         venv_name="${venv_name%-*}"
+        echo "$venv_name"
     fi
 
     printf "%s" "$venv_name"
@@ -86,8 +87,11 @@ function _maybeworkon() {
         DEFAULT_MESSAGE_FORMAT="${DEFAULT_MESSAGE_FORMAT/🐍/}"
     fi
 
+    # echo "Checking get_venv_name $(_get_venv_name $VIRTUAL_ENV $venv_type)"
     # Don't reactivate an already activated virtual environment
     if [[ -z "$VIRTUAL_ENV" || "$venv_name" != "$(_get_venv_name $VIRTUAL_ENV $venv_type)" ]]; then
+
+      # echo "Dont reactivate"
 
         if [[ ! -d "$venv_dir" ]]; then
             printf "Unable to find ${PURPLE}$venv_name${NORMAL} virtualenv\n"
@@ -210,6 +214,17 @@ function check_venv()
         fi
     fi
 
+    local GIT_DIR=`git rev-parse --show-toplevel 2> /dev/null`
+    local virtual_env_dirs="$AUTOSWITCH_VIRTUAL_ENV_DIR"
+    if [[ -d "$GIT_DIR" ]] && [[ -d "$virtual_env_dirs" ]]; then
+      local _project_name="$(basename $GIT_DIR)"
+
+      if [[ -d "$virtual_env_dirs$_project_name" ]]; then
+        _maybeworkon "$virtual_env_dirs$_project_name" "directory"
+        return
+      fi
+    fi
+
     local venv_type="$(_get_venv_type "$PWD" "unknown")"
 
     # If we still haven't got anywhere, fallback to defaults
@@ -238,6 +253,7 @@ function _default_venv()
 # remove project environment for current directory
 function rmvenv()
 {
+  echo "WOW"
     local venv_type="$(_get_venv_type "$PWD" "unknown")"
 
     if [[ "$venv_type" == "pipenv" ]]; then
@@ -420,3 +436,4 @@ else
     autoload -Uz add-zsh-hook
     add-zsh-hook precmd _autoswitch_startup
 fi
+
